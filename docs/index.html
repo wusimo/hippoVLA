@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HIPPOVLA: Hippocampus-Inspired Episodic Memoryfor Long-Horizon Vision-Language-Action Models</title>
-  <meta name="description" content="HIPPOVLA: Hippocampus-Inspired Episodic Memoryfor Long-Horizon Vision-Language-Action Models." />
+  <title>HIPPOVLA — Hippocampus-Inspired Episodic Memory for VLA Models</title>
+  <meta name="description" content="HIPPOVLA: a hippocampus-inspired episodic memory architecture for long-horizon Vision-Language-Action models." />
   <style>
     :root {
       --bg: #ffffff;
@@ -33,6 +33,25 @@
     a { color: inherit; text-decoration: none; }
 
     .container { width: min(var(--maxw), 92%); margin: 0 auto; }
+    .figure-section {
+      padding: 42px 0 24px;
+      background: #ffffff;
+    }
+
+    .figure-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .overview-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 12px;
+    }
 
     .hero {
       background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
@@ -121,6 +140,52 @@
       margin: 8px 4px 0; text-align: left;
     }
 
+
+
+    .figure-section {
+      padding: 34px 0 12px;
+      background: #fff;
+    }
+    .figure-placeholder {
+      border: 2px dashed #bfdbfe;
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);
+      min-height: 340px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-align: center;
+      padding: 34px;
+      color: #1e3a8a;
+      box-shadow: var(--shadow);
+    }
+    .figure-placeholder .placeholder-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .figure-placeholder .placeholder-path {
+      display: inline-block;
+      border: 1px solid #bfdbfe;
+      border-radius: 999px;
+      background: #fff;
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      color: #1d4ed8;
+    }
+    .audit-note {
+      border-left: 4px solid var(--primary);
+      background: #eff6ff;
+      border-radius: 12px;
+      padding: 14px 16px;
+      color: #1f2937;
+      margin-top: 18px;
+      font-size: 0.95rem;
+    }
+
     .video-grid {
       display: grid; grid-template-columns: repeat(2, 1fr);
       gap: 18px; margin-top: 20px;
@@ -157,15 +222,18 @@
   <header class="hero">
     <div class="container">
       <div class="venue">Project Page · Research Preview</div>
-      <div class="brand">hippoVLA</div>
-      <h1>Hippocampus-Inspired Episodic Memoryfor Long-Horizon Vision-Language-Action Models</h1>
+      <div class="brand">HIPPOVLA</div>
+      <h1>Hippocampus-Inspired Episodic Memory for Long-Horizon Vision-Language-Action Models</h1>
       <p class="subtitle">
-        hippoVLA combines a spatially enhanced VLM backbone with an explicit
+        HIPPOVLA combines a spatially enhanced VLM backbone with an explicit
         short-term memory module — inspired by the hippocampus — to give VLA
         agents the temporal context they need for long-horizon manipulation.
       </p>
+
+
       <div class="button-row">
-        <a class="button primary" href="https://github.com/wusimo/hybridVLA/tree/starVLA-jiangnan" target="_blank">Code</a>
+        <!-- <a class="button primary" href="https://github.com/wusimo/hybridVLA/tree/starVLA-jiangnan" target="_blank">Code</a> -->
+        <!-- <a class="button" href="#overview-figure">Figure</a> -->
         <a class="button" href="#tldr">TL;DR</a>
         <a class="button" href="#highlights">Highlights</a>
         <a class="button" href="#method">Method</a>
@@ -176,15 +244,29 @@
     </div>
   </header>
 
+  <section id="overview-figure" class="figure-section">
+    <div class="container">
+      <div class="figure-card">
+        <img
+          src="./assets/abstract.png"
+          alt="HIPPOVLA architecture overview"
+          class="overview-image"
+        />
+      </div>
+    </div>
+  </section>
+
+
   <section id="tldr">
     <div class="container">
       <h2>TL;DR</h2>
       <p class="lead">
-        Current VLA systems suffer from three bottlenecks: missing 3D geometric priors,
-        missing temporal memory, and weak grounding from semantic reasoning to physical action.
-        <strong>hippoVLA</strong> addresses these with a three-layer design:
-        a hippocampus-inspired spatiotemporal memory, a spatially enhanced
-        RynnBrain-8B backbone, and 3D-grounded training data.
+        Long-horizon VLA policies must remember previously observed objects,
+        completed subgoals, and evolving scene configurations while still grounding
+        each new instruction in the current visual observation. <strong>HIPPOVLA</strong>
+        addresses this by keeping history outside the language prompt: sparse
+        historical frames are encoded by the visual stack, summarized by STMB,
+        fused with current DeepStack visual features through a learned gate.
       </p>
 
       <div class="grid-3">
@@ -199,11 +281,12 @@
           <div class="stat-label">rank 2, +0.72 over no-memory</div>
         </div>
         <div class="card stat-card">
-          <div class="stat-label">LIBERO-Object</div>
-          <div class="stat-num">99.8</div>
-          <div class="stat-label">best across all 4-in-1 settings</div>
+          <div class="stat-label">Language Context</div>
+          <div class="stat-num">Fixed</div>
+          <div class="stat-label">history handled through visual memory</div>
         </div>
       </div>
+
     </div>
   </section>
 
@@ -212,10 +295,10 @@
       <h2>Highlights</h2>
       <div class="highlights">
         <ol>
-          <li><strong>Hippocampus-inspired memory.</strong> A short-term memory module aggregates history frames at a tunable sampling interval; on LIBERO it lifts <em>Long</em> from 93.0 → <strong>96.0</strong> and <em>Spatial</em> from 93.2 → <strong>94.4</strong>.</li>
-          <li><strong>Spatially enhanced backbone.</strong> RynnBrain-8B improves spatial reasoning and object localization, reaching CALVIN ABC→D Avg. Len. <strong>4.42</strong> (rank 2) when paired with DTT-based hippoVLA memory.</li>
-          <li><strong>3D grounded training.</strong> Point/depth-aligned supervision bridges semantic reasoning and physical coordinates.</li>
-          <li><strong>Modular evaluation.</strong> Built on StarVLA, hippoVLA enables clean ablations across backbones, memory configurations, and data settings.</li>
+          <li><strong>Explicit episodic visual memory.</strong> STMB stores sparsely sampled historical visual features instead of appending history frames to the language prompt, preserving a compact language context.</li>
+          <li><strong>Current-frame grounding + episodic retrieval.</strong> RynnBrain-8B provides per-frame multimodal and spatial representations, while STMB retrieves task-relevant short-term visual history.</li>
+          <li><strong>Content-aware fusion gate.</strong> Current visual features query the history buffer through cross-attention, then a learned gate decides how strongly memory should modify each visual token.</li>
+          <li><strong>DeepStack + action-token decoding.</strong> Memory-conditioned visual features are injected into intermediate language layers, and dedicated placeholder tokens are decoded into continuous action chunks.</li>
         </ol>
       </div>
     </div>
@@ -225,42 +308,38 @@
     <div class="container">
       <h2>Method</h2>
       <p class="lead">
-        hippoVLA is organized as three composable layers that can be ablated independently.
+        HIPPOVLA is organized around a spatial VLA backbone plus a separate
+        feature-level episodic memory pathway, rather than treating history as more
+        text-context tokens.
       </p>
       <div class="grid-2" style="margin-top: 24px;">
-        <div class="card">
-          <h3>Layer 1 · Hippocampus Memory</h3>
+        <!-- <div class="card">
+          <h3>RynnBrain-8B Backbone</h3>
           <p>
-            Inject explicit short-term memory into the visual encoder so the model retains
-            object trajectories, tracks interaction history, and reasons over long-horizon tasks.
-            The two key knobs are <em>memory length</em> (how many past frames) and
-            <em>sampling interval</em> (how far apart they are sampled). hippoVLA uses
-            length 5 with interval 10 by default.
+            The policy builds on RynnBrain-8B, initialized from Qwen3-VL-8B-Instruct,
+            combining a Qwen3-8B language backbone with a SigLIP2-So400m vision encoder
+            and DeepStack multi-level visual feature injection.
+          </p>
+        </div> -->
+        <div class="card">
+          <h3>Short-Term Memory Bank (STMB)</h3>
+          <p>
+            STMB operates at the visual-feature level. It samples a sparse history buffer,
+            adds temporal embeddings, aggregates visual history through cross-attention,
+            and produces memory-conditioned features with the same shape as the current
+            visual features.
           </p>
         </div>
         <div class="card">
-          <h3>Layer 2 · Spatially Enhanced VLM</h3>
+          <h3>Content-Aware Fusion Gate</h3>
           <p>
-            Replace the generic VLM base with RynnBrain-8B, a spatial foundation model that
-            improves geometric understanding and coordinate-sensitive reasoning — directly
-            addressing the 3D-prior bottleneck.
-          </p>
-        </div>
-        <div class="card">
-          <h3>Layer 3 · 3D Grounded Training Data</h3>
-          <p>
-            Integrate depth and point-based supervision into training so the model learns to align
-            language semantics with physically meaningful coordinates rather than 2D pixels.
-          </p>
-        </div>
-        <div class="card">
-          <h3>Engineering Platform</h3>
-          <p>
-            Implemented on StarVLA for clean backbone replacement, modular integration, and
-            controlled ablation across embodied benchmarks (LIBERO 4-in-1, CALVIN ABC→D).
+            A learned per-token, per-channel gate fuses the current observation with the
+            aggregated history. High gate values preserve the current frame, while low
+            values pull more information from retrieved visual history.
           </p>
         </div>
       </div>
+      
     </div>
   </section>
 
@@ -339,7 +418,6 @@
       </p>
 
 
-
       <h3 style="margin-top: 36px;">CALVIN ABC→D Long-horizon Leaderboard</h3>
       <div class="table-wrap">
         <table class="results-table">
@@ -386,7 +464,7 @@
         </table>
       </div>
       <p class="table-caption">
-        On the CALVIN ABC→D leaderboard, hippoVLA (DTT &amp; Memory) reaches rank 2
+        On the CALVIN ABC→D leaderboard, hippoVLA reaches rank 2
         (Avg. Len. 4.42), a +0.72 improvement over the no-memory ablation (3.70),
         with Step 5 success improved from 61.0% to 75.9%.
       </p>
@@ -397,8 +475,8 @@
     <div class="container">
       <h2>Rollout Videos</h2>
       <p class="lead">
-        Qualitative rollouts from the hippoVLA checkpoint
-        (<code>0420_libero4in1_RynnBrain8OFT_memory</code>, step 60k) on the four LIBERO suites.
+        Use these slots for qualitative rollouts that illustrate when episodic retrieval helps the
+        policy remember object motion, completed subgoals, or partially observed scene changes.
       </p>
       <div class="video-grid">
         <div class="video-card">
@@ -422,12 +500,13 @@
   </section>
 
 
+
   <section id="citation">
     <div class="container">
       <h2>Citation</h2>
       <pre><code>@misc{hippovla_2026,
-  title  = {HIPPOVLA: Hippocampus-Inspired Episodic Memoryfor Long-Horizon Vision-Language-Action Models},
-  author = {},
+  title  = {HIPPOVLA: Hippocampus-Inspired Episodic Memory for Long-Horizon Vision-Language-Action Models},
+  author = {Luxitech},
   year   = {2026},
   note   = {Project Page}
 }</code></pre>
